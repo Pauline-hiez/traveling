@@ -26,7 +26,7 @@ class Renderer
         $this->css[] = $href;
     }
 
-    public function addScripts(string $src): void
+    public function addScript(string $src): void
     {
         // Ajoute les scripts à la page
         $this->scripts[] = $src;

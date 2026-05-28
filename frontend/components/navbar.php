@@ -28,7 +28,7 @@ $current = basename($_SERVER['PHP_SELF']);
 <!-- Logo -->
 <div id="logo-top" class="py-4 text-center">
     <a href="<?= BASE_URL ?>">
-        <img src="<?= ASSETS_URL ?>img/logo/logo-traveling-jaune.png" alt="Traveling" class="no-sepia mx-auto h-[70px] w-auto">
+        <img src="<?= ASSETS_URL ?>img/logo/logo-traveling.png" alt="Traveling" class="no-sepia mx-auto h-[70px] w-auto">
         <p class="mt-1 font-title text-sm tracking-[0.3rem] text-[var(--gold)]">TRAVELING</p>
     </a>
 </div>
