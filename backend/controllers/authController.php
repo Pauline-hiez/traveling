@@ -193,7 +193,7 @@ class AuthController
         }
 
         // Rechercher par google_id ou email
-        $user = $this->userModel->findByGoogleId($googleUser['id']) ?: $this->findByEmail($googleUser['email']);
+        $user = $this->userModel->findByGoogleId($googleUser['id']) ?: $this->userModel->findByEmail($googleUser['email']);
 
         // Création du compte si besoin
         if (!$user) {
