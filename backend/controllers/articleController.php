@@ -78,7 +78,7 @@ class ArticleController
         }
         unset($comment);
 
-        $tmbdIds = $filmModel->getTmdbIdsByArticle((int)$id);
+        $tmdbIds = $filmModel->getTmdbIdsByArticle((int)$id);
         $lieux = $lieuModel->getByArticle((int)$id);
 
         $userLiked = false;

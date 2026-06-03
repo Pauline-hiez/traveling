@@ -2,6 +2,23 @@
 
 class TmdbService
 {
+    private static function extractYear(?string $date): ?string
+    {
+        if (!$date) {
+            return null;
+        }
+
+        return strlen($date) >= 4 ? substr($date, 0, 4) : null;
+    }
+
+    private static function formatGenres(array $genres): ?string
+    {
+        $names = array_values(array_filter(array_map(static function ($genre): string {
+            return is_array($genre) ? (string)($genre['name'] ?? '') : '';
+        }, $genres)));
+        return $names !== [] ? implode(', ', $names) : null;
+    }
+
     private static function normalizeMedia(array $data, string $type): array
     {
         // Normalise les champs entre films et séries
@@ -16,6 +33,13 @@ class TmdbService
         } else {
             $data['media_type'] = 'movie';
         }
+
+        $data['year'] = self::extractYear($data['release_date'] ?? $data['first_air_date'] ?? null);
+        $genresLabel = self::formatGenres($data['genres'] ?? []);
+        if ($genresLabel !== null) {
+            $data['genres_label'] = $genresLabel;
+        }
+
         return $data;
     }
 
