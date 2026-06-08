@@ -123,7 +123,7 @@ class Lieu
         $stmt->execute([':img' => $imagePath, ':id' => $id]);
     }
 
-    public function setBackround(int $id, string $bgPath): void
+    public function setBackground(int $id, string $bgPath): void
     {
         // Met à jour le fond d'un lieu
         $stmt = $this->db->prepare("UPDATE lieux SET bg_lieux = :bg_lieux WHERE id = :id");
