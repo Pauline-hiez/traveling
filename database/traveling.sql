@@ -77,9 +77,10 @@ CREATE TABLE `article_slider_images` (
   `id` int UNSIGNED NOT NULL,
   `article_id` int UNSIGNED NOT NULL,
   `image_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slider_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slider_text` text COLLATE utf8mb4_unicode_ci,
-  `caption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `caption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `slider_title` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slider_text` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

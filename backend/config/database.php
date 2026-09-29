@@ -146,12 +146,18 @@ class Database
             id int UNSIGNED NOT NULL AUTO_INCREMENT,
             article_id int UNSIGNED NOT NULL,
             image_path varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-            slider_title varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            slider_text text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
             caption varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            slider_title varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            slider_text text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
             PRIMARY KEY (id),
             KEY article_id (article_id),
             CONSTRAINT article_slider_images_ibfk_1 FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        $stmt = $pdo->query("SHOW COLUMNS FROM article_slider_images LIKE 'created_at'");
+        if (!$stmt->fetch()) {
+            $pdo->exec("ALTER TABLE article_slider_images ADD COLUMN created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER caption");
+        }
     }
 }
