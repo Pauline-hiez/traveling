@@ -218,7 +218,7 @@ CREATE TABLE `users` (
   `email` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` enum('user','moderateur','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'assets/img/default-avatar.png',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'frontend/assets/img/avatar/avatar-defaut.png',
   `avatar_pos_x` tinyint UNSIGNED NOT NULL DEFAULT '50',
   `avatar_pos_y` tinyint UNSIGNED NOT NULL DEFAULT '50',
   `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'assets/img/bg/hp.jpg',

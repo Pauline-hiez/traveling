@@ -170,7 +170,7 @@ if (!is_array($children)) {
             <div class="comment <?= $i >= COMMENTS_PREVIEW ? 'hidden' : '' ?> mb-4" id="c<?= $comment['id'] ?>">
                 <div class="flex justify-between items-start gap-3 mb-2">
                     <div class="flex items-center gap-3 min-w-0">
-                        <img src="<?= asset_url($comment['avatar'] ?? 'assets/img/default-avatar.png') ?>" alt="Avatar de <?= htmlspecialchars($comment['pseudo']) ?>" class="w-9 h-9 rounded-full object-cover border border-[rgba(255,211,157,.35)] flex-shrink-0">
+                        <img src="<?= asset_url($comment['avatar'] ?? null, 'frontend/assets/img/avatar/avatar-defaut.png') ?>" alt="Avatar de <?= htmlspecialchars($comment['pseudo']) ?>" class="w-9 h-9 rounded-full object-cover border border-[rgba(255,211,157,.35)] flex-shrink-0">
                         <div class="min-w-0">
                             <strong class="text-sm block leading-tight"><?= htmlspecialchars($comment['pseudo']) ?></strong>
                             <small class="text-xs opacity-50 block"><?= date('d/m/Y H:i', strtotime($comment['created_at'])) ?></small>
@@ -195,7 +195,7 @@ if (!is_array($children)) {
                         <?php foreach ($children[$comment['id']] as $reply): ?>
                             <div class="comment-reply" id="c<?= $reply['id'] ?>">
                                 <div class="flex items-start gap-2 mb-1">
-                                    <img src="<?= asset_url($reply['avatar'] ?? 'assets/img/default-avatar.png') ?>" alt="Avatar de <?= htmlspecialchars($reply['pseudo']) ?>" class="w-7 h-7 rounded-full object-cover border border-[rgba(255,211,157,.25)] flex-shrink-0">
+                                    <img src="<?= asset_url($reply['avatar'] ?? null, 'frontend/assets/img/avatar/avatar-defaut.png') ?>" alt="Avatar de <?= htmlspecialchars($reply['pseudo']) ?>" class="w-7 h-7 rounded-full object-cover border border-[rgba(255,211,157,.25)] flex-shrink-0">
                                     <div class="min-w-0 flex-1">
                                         <div class="flex justify-between gap-2">
                                             <strong class="text-xs"><?= htmlspecialchars($reply['pseudo']) ?></strong>

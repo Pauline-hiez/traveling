@@ -27,7 +27,7 @@ $positions = [
         <div class="profile-hero__top">
             <div class="profile-hero__identity">
                 <div class="profile-hero__avatar-block">
-                    <img src="<?= asset_url($user['avatar'] ?? null, 'frontend/assets/img/avatars/avatar-defaut.jpg') ?>" alt="Avatar" class="no-sepia profile-hero__avatar" style="object-fit:cover; object-position: <?= htmlspecialchars($positions['avatar_pos_x']) ?>% <?= htmlspecialchars($positions['avatar_pos_y']) ?>%;">
+                    <img src="<?= asset_url($user['avatar'] ?? null, 'frontend/assets/img/avatar/avatar-defaut.png') ?>" alt="Avatar" class="no-sepia profile-hero__avatar" style="object-fit:cover; object-position: <?= htmlspecialchars($positions['avatar_pos_x']) ?>% <?= htmlspecialchars($positions['avatar_pos_y']) ?>%;">
 
                 </div>
 
