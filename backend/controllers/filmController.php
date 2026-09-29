@@ -84,7 +84,7 @@ class FilmController
             'film' => $film,
             'credits' => $credits,
             'cast' => $cast,
-            'similarFilm' => $similarFilms,
+            'similarFilms' => $similarFilms,
             'articles' => $articles,
             'title' => ($film['title'] ?? 'Film') . ' - Traveling',
         ]);

@@ -76,7 +76,7 @@ class LieuController
             if (is_array($osmPlace)) {
                 $osmAddress = $osmPlace['address'] ?? [];
                 $lieuDisplayName = $osmPlace['display_name'] ?? null;
-                $lieuCountry = $osmAdress['country'] ?? $lieuCountry;
+                $lieuCountry = $osmAddress['country'] ?? $lieuCountry;
                 $lieuRegion = $osmAddress['state'] ?? $osmAddress['region'] ?? null;
                 $lieuType = trim((string)(($osmPlace['category'] ?? '') . ' ' . ($osmPlace['type'] ?? '')));
                 $lieuExtraTags = [];
@@ -114,7 +114,7 @@ class LieuController
         $renderer->addParamsArray([
             'lieu' => $lieu,
             'articles' => $articles,
-            'heroImages' => $heroImage,
+            'heroImage' => $heroImage,
             'lieuSummary' => $lieuSummary,
             'lieuCountry' => $lieuCountry,
             'lieuRegion' => $lieuRegion,

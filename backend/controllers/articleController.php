@@ -125,6 +125,18 @@ class ArticleController
         echo json_encode(['liked' => $liked]);
     }
 
+    public function favori(string $id): void
+    {
+        AuthMiddleware::require();
+        CsrfMiddleware::verify();
+
+        // Ajoute/retire l'article des favoris en une seule action
+        $added = (new Favorite())->toggle((int)$_SESSION['user']['id'], (int)$id);
+
+        header('Content-Type: application/json');
+        echo json_encode(['added' => $added]);
+    }
+
     public function autocomplete(): void
     {
         // Autocomplete public des titres d'articles (inclut image si disponible)

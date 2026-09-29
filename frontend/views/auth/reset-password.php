@@ -11,7 +11,8 @@
         <?php endif; ?>
 
         <?php if (!empty($validToken)): ?>
-            <form method="POST" action="<?= BASE_URL ?>auth/reinitialiser-mot-de-passe" class="flex flex-col gap-3">
+            <div id="reset-password-alert" class="hidden mb-3 rounded-lg px-3 py-2 text-sm"></div>
+            <form id="form-reset-password" method="POST" action="<?= BASE_URL ?>auth/reinitialiser-mot-de-passe" class="flex flex-col gap-3">
                 <?= CsrfMiddleware::field() ?>
                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                 <input type="password" name="password" placeholder="Nouveau mot de passe" required minlength="8" class="form-input">

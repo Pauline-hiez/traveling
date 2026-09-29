@@ -37,7 +37,7 @@ class User
     public function findByGoogleId(string $googleId): array|false
     {
         // Recherche par google_id
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE google_id = : gid");
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE google_id = :gid");
         $stmt->execute([':gid' => $googleId]);
         return $stmt->fetch();
     }
@@ -80,14 +80,14 @@ class User
 
     public function countLikes(int $userId): int
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) likes WHERE user_id = :user_id");
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM likes WHERE user_id = :user_id");
         $stmt->execute([':user_id' => $userId]);
         return (int) $stmt->fetchColumn();
     }
 
     public function countComments(int $userId): int
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) comments WHERE user_id = :user_id");
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM comments WHERE user_id = :user_id");
         $stmt->execute([':user_id' => $userId]);
         return (int) $stmt->fetchColumn();
     }

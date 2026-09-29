@@ -12,7 +12,7 @@ class Lieu
     public function getAll(): array
     {
         // Tous les lieux par ordre alphabétique
-        return $this->db->query("SELECT * FROM lieux OREDER BY name ASC")->fetchAll();
+        return $this->db->query("SELECT * FROM lieux ORDER BY name ASC")->fetchAll();
     }
 
     public function getPublishedLieux(): array

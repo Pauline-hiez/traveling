@@ -4,7 +4,7 @@ require_once ROOT . '/backend/models/userModel.php';
 require_once ROOT . '/backend/models/articleModel.php';
 require_once ROOT . '/backend/services/AuthService.php';
 require_once ROOT . '/backend/services/JsonResponseService.php';
-// require_once ROOT . '/backend/services/FileUploaderService.php';
+require_once ROOT . '/backend/services/FileUploaderService.php';
 require_once ROOT . '/backend/middleware/AuthMiddleware.php';
 require_once ROOT . '/backend/middleware/CsrfMiddleware.php';
 
@@ -51,10 +51,10 @@ class UserController
         $memberSince = !empty($profileUser['created_at']) ? date('d/m/Y', strtotime($profileUser['created_at'])) : 'Date inconnue';
         // Historique utilisateur
         $history = [];
-        if (file_exists(ROOT . '/backend/models/historyModel')) {
+        if (file_exists(ROOT . '/backend/models/historyModel.php')) {
             require_once ROOT . '/backend/models/historyModel.php';
             $historyModel = new History();
-            $historyModel->getByUser($userId, HISTORY_PREVIEW);
+            $history = $historyModel->getByUser($userId, HISTORY_PREVIEW);
         }
 
         // Articles publiés de l'auteur (modérateur ou admin)
@@ -153,43 +153,43 @@ class UserController
         JsonResponse::jsonSuccess('Mot de passe mis à jour.');
     }
 
-    // public function updateAvatar(): void {
-    //     AuthMiddleware::require();
-    //     CsrfMiddleware::verify();
+    public function updateAvatar(): void {
+        AuthMiddleware::require();
+        CsrfMiddleware::verify();
 
-    //     // Upload et sauvegarde de l'avatar
-    //     $path = FileUploader::upload('avatar', 'profil/avatar');
-    //     if (!$path) {
-    //         JsonResponse::jsonError('Erreur upload (JPG/PNG/WEBP requis).');
-    //         return;
-    //     }
+        // Upload et sauvegarde de l'avatar
+        $path = FileUploader::upload('avatar', 'profil/avatar');
+        if (!$path) {
+            JsonResponse::jsonError('Erreur upload (JPG/PNG/WEBP requis).');
+            return;
+        }
 
-    //     $userId = (int)$_SESSION['user']['id'];
-    //     $this->userModel->update($userId, ['avatar' => $path]);
-    //     $_SESSION['user']['avatar'] = $path;
-    //     $this->persistPositionOffsets($userId, 'avatar');
+        $userId = (int)$_SESSION['user']['id'];
+        $this->userModel->update($userId, ['avatar' => $path]);
+        $_SESSION['user']['avatar'] = $path;
+        $this->persistPositionOffsets($userId, 'avatar');
 
-    //     JsonResponse::jsonSuccess('Avatar mis à jour.', $path);
-    // }
+        JsonResponse::jsonSuccess('Avatar mis à jour.', $path);
+    }
 
-    // public function updateBackgrond(): void {
-    //     AuthMiddleware::require();
-    //     CsrfMiddleware::verify();
+    public function updateBackground(): void {
+        AuthMiddleware::require();
+        CsrfMiddleware::verify();
 
-    //     // Upload et sauvegarde du fond
-    //     $path = FileUploader::upload('background', 'profil/bg');
-    //     if (!$path) {
-    //         JsonResponse::jsonError('Erreur upload (JPG/PNG/WEBP requis)');
-    //         return;
-    //     }
+        // Upload et sauvegarde du fond
+        $path = FileUploader::upload('background', 'profil/bg');
+        if (!$path) {
+            JsonResponse::jsonError('Erreur upload (JPG/PNG/WEBP requis)');
+            return;
+        }
 
-    //     $userId = (int)$_SESSION['user']['id'];
-    //     $this->userModel->update($userId, ['background' => $path]);
-    //     $_SESSION['user']['bg'] = $path;
-    //     $this->persistPositionOffsets($userId, 'background');
+        $userId = (int)$_SESSION['user']['id'];
+        $this->userModel->update($userId, ['background' => $path]);
+        $_SESSION['user']['bg'] = $path;
+        $this->persistPositionOffsets($userId, 'background');
 
-    //     JsonResponse::jsonSuccess('Fond mis à jour.', $path);
-    // }
+        JsonResponse::jsonSuccess('Fond mis à jour.', $path);
+    }
 
     public function delete(): void
     {

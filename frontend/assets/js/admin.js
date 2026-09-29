@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderStep = () => {
         // Affiche l'étape en cours
-        steps.foreEach((step, index) => {
+        steps.forEach((step, index) => {
             step.classList.toggle('hidden', index !== currentStep);
         });
         indicators.forEach((indicator, index) => {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             chip.addEventListener('click', () => {
-                values.dalete(id);
+                values.delete(id);
                 syncHiddenInput(type === 'film' ? tmdbIdsInput : lieuIdsInput, values);
                 renderSelectedChips(container, values, type);
             });
@@ -180,13 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         syncHiddenInput(tmdbIdsInput, selectedFilms);
         syncHiddenInput(lieuIdsInput, selectedLieux);
-        renderSelectedChips(tmdbSelected, selectedFilms, 'films');
+        renderSelectedChips(tmdbSelected, selectedFilms, 'film');
         renderSelectedChips(lieuSelected, selectedLieux, 'lieu');
         clearResultBox(tmdbResults);
         clearResultBox(lieuResults);
 
         fileInputs.forEach((input) => {
-            const previewId = input.CDATA_SECTION_NODE.preview;
+            const previewId = input.dataset.preview;
             const preview = previewId ? document.getElementById(previewId) : null;
             if (preview) {
                 if (preview.tagName === 'IMG') {
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ferme la modal et reset
         modal.classList.remove('open');
         goToStep(0);
-        resterModalForm();
+        resetModalForm();
     };
 
     const setPreviewImage = (previewId, url) => {
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const x = px ? px.value : (preview.dataset.posX || '50');
             const y = py ? py.value : (preview.dataset.posY || '50');
             preview.style.objectFit = 'cover';
-            preview.style.objectPosition = x + '%' + y + '%';
+            preview.style.objectPosition = x + '% ' + y + '%';
             preview.classList.remove('hidden');
             makeRepositionable(preview);
             setPreviewWrapState(previewId, true);
@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const clearPreviewImage = (preview) => {
+    const clearPreviewImage = (previewId) => {
         // Efface la preview et ses positions
         if (!previewId) return;
         const preview = document.getElementById(previewId);
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const article = data.data.article;
         form.action = apiBaseUrl + 'admin/articles/' + id + '/modifier';
         if (articleIdInput) articleIdInput.value = id;
-        if (modalTitle) modal.title.textContent = 'Modifier un article';
+        if (modalTitle) modalTitle.textContent = 'Modifier un article';
         if (submitButton) submitButton.textContent = 'Modifier';
 
         const titleInput = form.querySelector('[name="title"]');
@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     tmdbSearch?.addEventListener('focus', () => {
-        if (tmdbResults?.children.length) lieuResults.classList.remove('hidden');
+        if (tmdbResults?.children.length) tmdbResults.classList.remove('hidden');
     });
 
     lieuSearch?.addEventListener('focus', () => {
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('change', () => {
             // Aperçu des fichiers sélectionnés
             const previewId = input.dataset.preview;
-            const preview = preview ? document.getElementById(previewId) : null;
+            const preview = previewId ? document.getElementById(previewId) : null;
             const file = input.files?.[0];
 
             if (!preview || !file) {
@@ -420,13 +420,13 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = () => {
                 if (preview.tagName === 'IMG') {
                     preview.src = String(reader.result);
-                    preview.style.objectFil = 'cover';
+                    preview.style.objectFit = 'cover';
 
                     const px = document.getElementById(previewId + '_pos_x');
                     const py = document.getElementById(previewId + '_pos_y');
                     const x = px ? px.value : (preview.dataset.posX || '50');
                     const y = py ? py.value : (preview.dataset.posY || '50');
-                    preview.style.objectPosition = x + '%' + y + '50%';
+                    preview.style.objectPosition = x + '% ' + y + '%';
                     preview.classList.remove('hidden');
                     makeRepositionable(preview);
                     setPreviewWrapState(previewId, true);
@@ -488,10 +488,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const shiftY = (dy / rect.height) * 100;
             let nx = Math.max(0, Math.min(100, startPosX + shiftX));
             let ny = Math.max(0, Math.min(100, startPosY + shiftY));
-            img.style.objectPosition = nx + '%' + ny + '%';
+            img.style.objectPosition = nx + '% ' + ny + '%';
             if (px) px.value = Math.round(nx);
             if (py) py.value = Math.round(ny);
-            updateRenderFromIgm(img, nx, ny);
+            updateRenderFromImg(img, nx, ny);
         };
 
         const onPointerUp = () => {
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!renderEl) return;
         // Applique le background-image et la position
         renderEl.style.backgroundImage = img.src ? `url('${img.src}')` : '';
-        renderEl.style.backgroundPosition = (nx !== undefined && ny !== undefined) ? nx + '%' + ny + '%' : (img.style.objectPosition || '50% 50%');
+        renderEl.style.backgroundPosition = (nx !== undefined && ny !== undefined) ? nx + '% ' + ny + '%' : (img.style.objectPosition || '50% 50%');
     }
 
     // Initialisation finale

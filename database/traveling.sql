@@ -35,7 +35,11 @@ CREATE TABLE `articles` (
   `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `quote` text COLLATE utf8mb4_unicode_ci,
   `anecdote` text COLLATE utf8mb4_unicode_ci,
+  `img_cover` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `img_illus` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `img_bg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `img_caption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `category` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `publish_at` datetime DEFAULT NULL
@@ -61,6 +65,21 @@ CREATE TABLE `article_films` (
 CREATE TABLE `article_lieux` (
   `article_id` int UNSIGNED NOT NULL,
   `lieu_id` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `article_slider_images`
+--
+
+CREATE TABLE `article_slider_images` (
+  `id` int UNSIGNED NOT NULL,
+  `article_id` int UNSIGNED NOT NULL,
+  `image_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slider_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slider_text` text COLLATE utf8mb4_unicode_ci,
+  `caption` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -127,7 +146,11 @@ CREATE TABLE `lieux` (
   `lat` decimal(10,7) DEFAULT NULL,
   `lng` decimal(10,7) DEFAULT NULL,
   `img` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `bg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bg_lieux` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `author_tips` text COLLATE utf8mb4_unicode_ci,
+  `author_suggestions` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -196,7 +219,11 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` enum('user','moderateur','admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'assets/img/default-avatar.png',
+  `avatar_pos_x` tinyint UNSIGNED NOT NULL DEFAULT '50',
+  `avatar_pos_y` tinyint UNSIGNED NOT NULL DEFAULT '50',
   `background` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'assets/img/bg/hp.jpg',
+  `background_pos_x` tinyint UNSIGNED NOT NULL DEFAULT '50',
+  `background_pos_y` tinyint UNSIGNED NOT NULL DEFAULT '50',
   `google_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `facebook_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP

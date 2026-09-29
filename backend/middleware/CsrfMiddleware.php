@@ -13,7 +13,7 @@ class CsrfMiddleware
     // Vérifie le token envoyé avec la requête POST
     public static function verify(): void
     {
-        $token = $_POST['csrf_toen'] ?? $_SERVER['HTTP_x8CSRF_TOKEN'] ?? '';
+        $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $token)) {
             http_response_code(403);
             require_once ROOT . '/backend/services/RendererService.php';

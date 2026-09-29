@@ -95,7 +95,7 @@ class AdminController
 
         // Validation et mise à jour du rôle
         $role = $_POST['role'] ?? '';
-        if (!in_array($role, ['user', 'modérateur', 'admin'], true)) {
+        if (!in_array($role, ['user', 'moderateur', 'admin'], true)) {
             JsonResponse::jsonError('Rôle invalide.');
             return;
         }
@@ -165,7 +165,7 @@ class AdminController
 
         // Récupère l'auteur et le contenu du commentaire
         $reason = trim($_POST['reason'] ?? '');
-        $stmt = Database::getInstance()->prepare("SELECT u.email, c.content AS comment_content FROM comments c JOIN users u ON u.id = c.user_id WHERE c.id = :id");
+        $stmt = Database::getInstance()->prepare("SELECT u.email, u.pseudo, c.content AS comment_content FROM comments c JOIN users u ON u.id = c.user_id WHERE c.id = :id");
         $stmt->execute([':id' => (int)$commentId]);
         $data = $stmt->fetch();
 
@@ -196,7 +196,7 @@ class AdminController
             'page' => $pagination['page'],
             'pages' => $pagination['pages'],
             'adminSection' => 'articles',
-            'adminSideBarStats' => $this->buildAdminNavStats(),
+            'adminSidebarStats' => $this->buildAdminNavStats(),
             'title' => 'Articles - Admin Traveling',
         ]);
         $renderer->addScript(ASSETS_URL . 'js/admin.js');
@@ -221,7 +221,7 @@ class AdminController
         ];
 
         foreach ($allArticles as $article) {
-            if (!empty($articlr['published'])) {
+            if (!empty($article['published'])) {
                 $articlesPublished++;
             } else {
                 $articlesDraft++;
@@ -352,7 +352,7 @@ class AdminController
         $publishAtRaw = trim($_POST['publish_at'] ?? '');
         if ($publishAtRaw !== '') {
             $data['published'] = 2;
-            $data['publish_at'] = str_replace('T', ' ', $publishAtRaw) . ':80';
+            $data['publish_at'] = str_replace('T', ' ', $publishAtRaw) . ':00';
         } else {
             $data['published'] = 1;
             $data['publish_at'] = null;
@@ -378,7 +378,7 @@ class AdminController
         $lieuDetails = [
             'description' => trim($_POST['lieu_description'] ?? '') ?: null,
             'author_tips' => trim($_POST['lieu_tips'] ?? '') ?: null,
-            'author_suggestions' => trim($_POST['lieu_tips'] ?? '') ?: null,
+            'author_suggestions' => trim($_POST['lieu_suggestions'] ?? '') ?: null,
         ];
 
         // Liaison films/lieux
@@ -417,7 +417,7 @@ class AdminController
         // Historique
         $historyMsg = "A publié l'article \"" . $title . "\"";
         if (file_exists(ROOT . '/backend/models/historyModel.php')) {
-            require_once ROOT . 'backend/models/historyModel.php';
+            require_once ROOT . '/backend/models/historyModel.php';
             $history = new History();
             $history->add((int)$_SESSION['user']['id'], $historyMsg);
         }

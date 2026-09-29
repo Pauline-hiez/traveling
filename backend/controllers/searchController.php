@@ -1,8 +1,8 @@
 <?php
 
-require_once ROOT . '/backend/models/articleModel';
+require_once ROOT . '/backend/models/articleModel.php';
 require_once ROOT . '/backend/models/filmModel.php';
-require_once ROOT . '/backend/models/lieuModel';
+require_once ROOT . '/backend/models/lieuModel.php';
 require_once ROOT . '/backend/services/TmdbService.php';
 
 class SearchController

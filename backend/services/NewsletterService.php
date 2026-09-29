@@ -69,7 +69,7 @@ class NewsletterService
     }
 
     // Prépare toutes les donénes de présentation pour la template
-    private function prepareTemplateData(array $articles): array
+    public function prepareTemplateData(array $articles): array
     {
         $urls = $this->loadEmailUrls();
 
@@ -215,7 +215,7 @@ class NewsletterService
         $logFile = ROOT . '/backend/logs/newsletter.log';
         $dir = dirname($logFile);
 
-        if (!is_dir($logFile)) mkdir($dir, 0755, true);
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
 
         $line = sprintf(
             "[%s] Sujet: \"%s\" | Envoyés: %d | Echecs: %d\n",

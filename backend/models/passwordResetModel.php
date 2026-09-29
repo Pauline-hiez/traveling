@@ -15,7 +15,7 @@ class PasswordReset
     {
         // Invalide les anciens tokens et en crée un nouveau
         $this->db->prepare("DELETE FROM password_resets WHERE user_id = :user_id AND used_at IS NULL")->execute([':user_id' => $userId]);
-        $this->db->prepare("INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (:uid, :token_hash, expires_at)")->execute([
+        $this->db->prepare("INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (:user_id, :token_hash, :expires_at)")->execute([
             ':user_id' => $userId,
             ':token_hash' => $tokenHash,
             ':expires_at' => $expiresAt,

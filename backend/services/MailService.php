@@ -130,7 +130,7 @@ class MailService
     public static function sendWelcome(string $to, string $pseudo): bool
     {
         // Construit le template et envoie
-        $heroUrl = trim((string)($_ENV['MAIL_WELCOME_HERO_URL'] ?? 'https://row/githubusercontent.com/Pauline-hiez/assets/main/bienvenue.jpg'));
+        $heroUrl = trim((string)($_ENV['MAIL_WELCOME_HERO_URL'] ?? 'https://raw.githubusercontent.com/Pauline-hiez/assets/main/bienvenue.jpg'));
         $bodyHtml = self::renderEmailTemplate('emails/bienvenue', [
             'pseudo' => $pseudo,
         ]);

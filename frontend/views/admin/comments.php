@@ -32,8 +32,8 @@
                         <tbody>
                             <?php foreach ($reports as $r): ?>
                                 <tr>
-                                    <td class="px-4 py-3 text-xs"><?= htmlspecialchars($r['reported']) ?></td>
-                                    <td class="px-4 py-3 text-xs"><?= htmlspecialchars($r['reported']) ?></td>
+                                    <td class="px-4 py-3 text-xs"><?= htmlspecialchars($r['reporter']) ?></td>
+                                    <td class="px-4 py-3 text-xs"><?= htmlspecialchars($r['author']) ?></td>
                                     <td class="px-4 py-3 text-xs max-w-[180px] truncate" title="<?= htmlspecialchars($r['comment_content']) ?>"><?= htmlspecialchars(mb_substr($r['comment_content'], 0, 50)) ?>...</td>
                                     <td class="px-4 py-3 text-xs"><?= htmlspecialchars($r['reason']) ?></td>
                                     <td class="px-4 py-3 text-xs">
@@ -46,7 +46,7 @@
                                             <a class="btn admin-action-btn" href="<?= BASE_URL ?>articles/<?= (int)$r['article_id'] ?>#c<?= (int)$r['comment_id'] ?>" target="_blank" title="Voir" aria-label="Voir">
                                                 👁
                                             </a>
-                                            <button class="btn admin-action-btn admin-action-btn--warn" onclick="warnUser(<?= $r['comment_id'] ?>, '<?= addslashes(htmlspecialchars($r['comment_id'])) ?>')" title="Avertir" aria-label="Avertir">
+                                            <button class="btn admin-action-btn admin-action-btn--warn" onclick="warnUser(<?= $r['comment_id'] ?>)" title="Avertir" aria-label="Avertir">
                                                 ⚠
                                             </button>
                                             <button class="btn admin-action-btn admin-action-btn--danger" onclick="deleteComment(<?= $r['comment_id'] ?>)" title="Supprimer" aria-label="Supprimer">

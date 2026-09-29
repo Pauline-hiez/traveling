@@ -132,8 +132,9 @@ class AuthController
             'title' => 'Réinitialisation du mot de passe - Traveling',
             'token' => $token,
             'validToken' => (bool)$reset,
-            'message' => $token === '' ? 'Lien manquant.' : ($reset ? '' : 'Lien ivalide ou expiré.'),
+            'message' => $token === '' ? 'Lien manquant.' : ($reset ? '' : 'Lien invalide ou expiré.'),
         ]);
+        $renderer->addScript(ASSETS_URL . 'js/reset-password.js');
         echo $renderer->render('auth/reset-password');
     }
 
@@ -161,7 +162,7 @@ class AuthController
         $this->userModel->update((int)$reset['user_id'], ['password' => AuthService::hash($password)]);
         $this->passwordResetModel->markUsed((int)$reset['id']);
 
-        JsonResponse::jsonSuccess('Mot de passe mis à jour !', BASE_URL . 'login?login=1');
+        JsonResponse::jsonSuccess('Mot de passe mis à jour !', BASE_URL . '?login=1');
     }
 
     public function logout(): void

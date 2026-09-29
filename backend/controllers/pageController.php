@@ -4,7 +4,7 @@ require_once ROOT . '/backend/config/database.php';
 require_once ROOT . '/backend/services/MailService.php';
 require_once ROOT . '/backend/services/RendererService.php';
 require_once ROOT . '/backend/services/JsonResponseService.php';
-require_once ROOT . '/models/articleModel.php';
+require_once ROOT . '/backend/models/articleModel.php';
 require_once ROOT . '/backend/models/newsletterModel.php';
 require_once ROOT . '/backend/middleware/CsrfMiddleware.php';
 
@@ -41,7 +41,7 @@ class PageController
     {
         // Page mentions légales
         $renderer = new \Services\Renderer();
-        $renderer->addParamsArray(['title' - 'Mentions légales & CGU - Traveling']);
+        $renderer->addParamsArray(['title' => 'Mentions légales & CGU - Traveling']);
         echo $renderer->render('pages/mentions');
     }
 
@@ -55,15 +55,15 @@ class PageController
         $subject = trim($_POST['subject'] ?? '');
         $message = trim($_POST['message'] ?? '');
 
-        if (!$pseudo || !filter_var($email, FILTER_VALIDATE_EMAIL) || $subject || $message) {
+        if (!$pseudo || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$subject || !$message) {
             JsonResponse::jsonError('Tous les champs sont obligatoires.');
             return;
         }
 
         // Corps HTML du message
-        // $html = "<p><strong>De :</strong> $pseudo ($email)</p><p><strong>Objet :</strong> $subject</p><p>" . nl2br(htmlspecialchars($message)) . "</p>";
-        // MailService::send($_ENV['MAIL_FROM'] ?? '', "Contact Traveling : $subject", $html);
-        // $this->jsonSuccess('Message envoyé, nous vous répondrons rapidement.');
+        $html = "<p><strong>De :</strong> $pseudo ($email)</p><p><strong>Objet :</strong> $subject</p><p>" . nl2br(htmlspecialchars($message)) . "</p>";
+        MailService::send($_ENV['MAIL_FROM'] ?? '', "Contact Traveling : $subject", $html);
+        JsonResponse::jsonSuccess('Message envoyé, nous vous répondrons rapidement.');
     }
 
     public function newsletter(): void
@@ -114,7 +114,7 @@ class PageController
                 'success' => false,
                 'message' => 'Une erreur est survenue pendant le désabonnement. Réessayez plus tard.',
             ]);
-            echo $renderer->render('page/newsletter-unsubscribe');
+            echo $renderer->render('pages/newsletter-unsubscribe');
             return;
         }
 
@@ -128,18 +128,22 @@ class PageController
     public function newsletterPreview(): void
     {
         // Aperçu de la newsletter
+        require_once ROOT . '/backend/services/NewsletterService.php';
         $articleModel = new Article();
         $since = date('Y-m-d H:i:s', strtotime('-7 days'));
         $articles = $articleModel->getPublishedSince($since, 4);
 
+        $newsletterService = new NewsletterService();
+        $templateData = $newsletterService->prepareTemplateData($articles);
+
         $renderer = new \Services\Renderer();
-        $renderer->addParamsArray([
+        $renderer->addParamsArray(array_merge([
             'title' => 'Aperçu newsletter - Traveling',
             'week_label' => 'semaine du ' . date('j F Y', strtotime('last monday')),
             'articles' => $articles,
             'news' => [],
             'article_count' => count($articles),
-        ]);
+        ], $templateData));
         echo $renderer->render('emails/newsletter');
     }
 }

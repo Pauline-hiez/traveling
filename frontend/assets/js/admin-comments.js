@@ -9,9 +9,10 @@ const adminCommentsInit = () => {
         alertEl.classList.remove('hidden');
     };
 
-    window.warnUser = async (cancelIdleCallback, reason) => {
+    window.warnUser = async (cid) => {
         // Envoie un avertissement à l'auteur
-        if (!confirm('Envoyer un avertissement ?')) return;
+        const reason = prompt('Motif de l\'avertissement ?');
+        if (!reason) return;
         const data = await apiFetch(BASE_URL + 'admin/commentaires/' + cid + '/avertir', 'POST', { reason });
         window.showAdminAlert?.(data.message, data.success);
         if (data.success) setTimeout(() => location.reload(), 1000);

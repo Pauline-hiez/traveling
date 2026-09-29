@@ -19,6 +19,10 @@ class Database
                 self::ensureReportsSchema(self::$instance);
                 self::ensurePasswordResetsSchema(self::$instance);
                 self::ensureArticlesPublishAtSchema(self::$instance);
+                self::ensureUserPositionColumns(self::$instance);
+                self::ensureArticleExtraColumns(self::$instance);
+                self::ensureLieuExtraColumns(self::$instance);
+                self::ensureArticleSliderImagesSchema(self::$instance);
             } catch (PDOException $e) {
                 // En production, ne pas afficher l'erreur
                 if ($_ENV['APP_ENV'] === 'development') {
@@ -75,5 +79,79 @@ class Database
         if (!$stmt->fetch()) {
             $pdo->exec("ALTER TABLE articles ADD COLUMN publish_at datetime DEFAULT NULL");
         }
+    }
+
+    private static function ensureUserPositionColumns(PDO $pdo): void
+    {
+        $tbl = $pdo->query("SHOW TABLES LIKE 'users'");
+        if (!$tbl || !$tbl->fetch()) {
+            return;
+        }
+
+        foreach (['avatar_pos_x', 'avatar_pos_y', 'background_pos_x', 'background_pos_y'] as $column) {
+            $stmt = $pdo->query("SHOW COLUMNS FROM users LIKE '$column'");
+            if (!$stmt->fetch()) {
+                $pdo->exec("ALTER TABLE users ADD COLUMN $column TINYINT UNSIGNED NOT NULL DEFAULT 50");
+            }
+        }
+    }
+
+    private static function ensureArticleExtraColumns(PDO $pdo): void
+    {
+        $tbl = $pdo->query("SHOW TABLES LIKE 'articles'");
+        if (!$tbl || !$tbl->fetch()) {
+            return;
+        }
+
+        $columns = [
+            'img_cover' => "varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'img_bg' => "varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'img_caption' => "varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'category' => "varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+        ];
+
+        foreach ($columns as $column => $definition) {
+            $stmt = $pdo->query("SHOW COLUMNS FROM articles LIKE '$column'");
+            if (!$stmt->fetch()) {
+                $pdo->exec("ALTER TABLE articles ADD COLUMN $column $definition");
+            }
+        }
+    }
+
+    private static function ensureLieuExtraColumns(PDO $pdo): void
+    {
+        $tbl = $pdo->query("SHOW TABLES LIKE 'lieux'");
+        if (!$tbl || !$tbl->fetch()) {
+            return;
+        }
+
+        $columns = [
+            'bg_lieux' => "varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'description' => "text COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'author_tips' => "text COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+            'author_suggestions' => "text COLLATE utf8mb4_unicode_ci DEFAULT NULL",
+        ];
+
+        foreach ($columns as $column => $definition) {
+            $stmt = $pdo->query("SHOW COLUMNS FROM lieux LIKE '$column'");
+            if (!$stmt->fetch()) {
+                $pdo->exec("ALTER TABLE lieux ADD COLUMN $column $definition");
+            }
+        }
+    }
+
+    private static function ensureArticleSliderImagesSchema(PDO $pdo): void
+    {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS article_slider_images (
+            id int UNSIGNED NOT NULL AUTO_INCREMENT,
+            article_id int UNSIGNED NOT NULL,
+            image_path varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+            slider_title varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            slider_text text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            caption varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            PRIMARY KEY (id),
+            KEY article_id (article_id),
+            CONSTRAINT article_slider_images_ibfk_1 FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     }
 }

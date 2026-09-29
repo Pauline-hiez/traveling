@@ -129,11 +129,14 @@ if (!is_array($children)) {
                 <div class="bloc-cuir p-4">
                     <h3 class="mb-3 text-xs uppercase tracking-widest text-[var(--gold-bright)]">Lieux de tournage</h3>
                     <div id="map" class="mb-3 h-[180px] rounded-lg border border-[var(--gold)]" data-lieux="<?= htmlspecialchars(json_encode($lieux, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), ENT_QUOTES) ?>"></div>
-                    <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-3">
                         <?php foreach ($lieux as $lieu): ?>
                             <a href="<?= BASE_URL ?>lieux/<?= $lieu['id'] ?>"
-                                class="text-xs text-[var(--gold)] no-underline transition hover:opacity-80">
-                                📍 <?= htmlspecialchars($lieu['name']) ?><?= $lieu['country'] ? ', ' . htmlspecialchars($lieu['country']) : '' ?>
+                                class="flex items-center gap-3 text-xs text-[var(--gold)] no-underline transition hover:opacity-80">
+                                <?php if (!empty($lieu['img'])): ?>
+                                    <img src="<?= asset_url($lieu['img']) ?>" alt="" class="w-10 h-10 rounded object-cover flex-shrink-0">
+                                <?php endif; ?>
+                                <span>📍 <?= htmlspecialchars($lieu['name']) ?><?= $lieu['country'] ? ', ' . htmlspecialchars($lieu['country']) : '' ?></span>
                             </a>
                         <?php endforeach; ?>
                     </div>

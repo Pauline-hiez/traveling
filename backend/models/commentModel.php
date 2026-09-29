@@ -54,7 +54,7 @@ class Comment
     public function getReported(): array
     {
         // Liste des signalements
-        $sql = "SELECT r.*, u1.pseudo AS reporter, c.content AS comment_content, c.id AS comment_id, c.article_id
+        $sql = "SELECT r.*, u1.pseudo AS reporter, u2.pseudo AS author, c.content AS comment_content, c.id AS comment_id, c.article_id
                 FROM reports r
                 JOIN users u1 ON u1.id = r.reporter_id
                 JOIN comments c ON c.id = r.comment_id
