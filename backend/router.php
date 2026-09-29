@@ -93,7 +93,7 @@ foreach ($routes as [$routeMethod, $pattern, $controllerName, $action]) {
     if (preg_match('#^' . $pattern . '$#', $url, $params)) {
         array_shift($params);
 
-        $controllerFile = ROOT . '/backend/controllers/' . $controllerName . '.php';
+        $controllerFile = ROOT . '/backend/controllers/' . lcfirst($controllerName) . '.php';
         if (!file_exists($controllerFile)) break;
 
         require_once $controllerFile;
